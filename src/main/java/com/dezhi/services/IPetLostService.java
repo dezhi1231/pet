@@ -28,5 +28,11 @@ public interface IPetLostService {
 	 */
 	public boolean addPetLostInfo(PetLostEntity petLostInfo);
 	
+	/**
+	 * 查询宠物丢失详情
+	 * @param id
+	 * @return
+	 */
+	public PetLostEntity queryPetLostInfoById(int id);
 
 }

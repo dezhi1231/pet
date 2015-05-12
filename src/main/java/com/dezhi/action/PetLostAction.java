@@ -6,15 +6,14 @@ import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-
 import com.dezhi.entity.PetLostEntity;
 import com.dezhi.entity.PetTypeEntity;
 import com.dezhi.services.IPetLostService;
@@ -85,6 +84,15 @@ public class PetLostAction {
 		return "/lost/addlostinfo";
 	}
 
+	
+	/**
+	 * 添加宠物丢失信息
+	 * @param petLostEntity
+	 * @param imageFile
+	 * @param request
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/addPetLostInfoPage", method = RequestMethod.POST)
 	public String addPetLostInfoPage(PetLostEntity petLostEntity,
 			MultipartFile imageFile, HttpServletRequest request,Model model) {
@@ -117,19 +125,20 @@ public class PetLostAction {
 
 		if (petLostEntity != null) {
 
-			petLostEntity.setImg_url(Utils.UPLOAD_IMG_URL + newfilename);
+			petLostEntity.setImg_url(newfilename);
 
 			petLostService.addPetLostInfo(petLostEntity);
 
 		}
 		
-		List<PetLostEntity> petList = petLostService.queryPetLostInfo(0,null);
-
-		model.addAttribute("petList", petList);
-
-		return "lost/lost";
+		return "redirect:/petlost/queryPetLostInfo?page=0";
 	}
 
+	/**
+	 * 根据宠物类型查询  类型名
+	 * @param petType
+	 * @return
+	 */
 	@RequestMapping(value = "/queryPetTypeList", method = RequestMethod.GET)
 	public @ResponseBody List<PetTypeEntity> queryPetTypeList(int petType) {
 
@@ -139,5 +148,14 @@ public class PetLostAction {
 		return petTypeList;
 
 	}
-
+	
+	@RequestMapping(value="/queryPetLostInfoById/{id}",method=RequestMethod.GET)
+	public String queryPetLostInfoById(@PathVariable int id,Model model){
+		
+		PetLostEntity petLostEntity = petLostService.queryPetLostInfoById(id);
+		
+		model.addAttribute("petLostInfo", petLostEntity);
+		
+		return "/lost/lostinfo";
+	}
 }

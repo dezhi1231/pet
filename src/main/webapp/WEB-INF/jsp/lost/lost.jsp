@@ -147,8 +147,8 @@ p {
 		<div role="main" class="ui-content">
 				<ul id="petLostList" data-role="listview" data-icon="false">
 					<c:forEach items="${petList }" var="pet">
-						<li><a href="lostinfo.html?${pet.id }" data-ajax="false">
-								<img src="${pet.img_url }" class="img" />
+						<li><a href="<%=path %>/petlost/queryPetLostInfoById/${pet.id }" data-ajax="false">
+								<img src="<%=path %>/upload/${pet.img_url }" class="img" />
 								<p>
 									<img src="<%=path%>/image/location_pin-16.png" class="img_icon" /><strong>走失地点:</strong> <span class="span">${pet.loseLocation }<span>
 								</p>

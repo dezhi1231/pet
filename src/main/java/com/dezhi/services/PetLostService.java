@@ -17,9 +17,7 @@ public class PetLostService implements IPetLostService {
 	private JdbcTemplate jdbcTemplate;
 
 	public List<PetLostEntity> queryPetLostInfo(int page, String location) {
-		// TODO Auto-generated method stub
 
-		// List view 下拉每次显示3个
 		String sql = "select * from tbl_petLost where 1=1 ";
 
 		if (!StringUtils.isEmpty(location)) {
@@ -38,8 +36,6 @@ public class PetLostService implements IPetLostService {
 
 		}
 		
-		
-
 		return jdbcTemplate.query(sql, new RowMapper<PetLostEntity>() {
 
 			public PetLostEntity mapRow(ResultSet rs, int rowNum)
@@ -82,6 +78,45 @@ public class PetLostService implements IPetLostService {
 								petLostInfo.getLoseDescribe(),
 								petLostInfo.getImg_url() }) > 0;
 
+	}
+
+	public PetLostEntity queryPetLostInfoById(int id) {
+		// TODO Auto-generated method stub
+		
+		String sql = "select * from tbl_petLost where id = ?";
+		
+		
+		return jdbcTemplate.queryForObject(sql, new Object[]{id}, new RowMapper<PetLostEntity>(){
+
+			public PetLostEntity mapRow(ResultSet rs, int rowNum)
+					throws SQLException {
+
+				PetLostEntity petlostInfo = new PetLostEntity();
+
+			    petlostInfo.setPetName(rs.getString("petName"));
+			    
+			    petlostInfo.setPetSex(rs.getInt("petSex"));
+			    
+			    petlostInfo.setPetTypeId(rs.getInt("petType"));
+
+				petlostInfo.setLoseDate(rs.getString("loseDate"));
+
+				petlostInfo.setLoseDescribe(rs.getString("loseDescribe"));
+
+				petlostInfo.setLoseLocation(rs.getString("loseLocation"));
+
+				petlostInfo.setImg_url(rs.getString("img_url"));
+				
+				petlostInfo.setRewards(rs.getFloat("rewards"));
+				
+				petlostInfo.setUser_id(rs.getString("user_id"));
+
+				petlostInfo.setId(rs.getInt("id"));
+
+				return petlostInfo;
+			}
+			
+		});
 	}
 
 }
